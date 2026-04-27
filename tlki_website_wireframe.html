@@ -1,0 +1,367 @@
+
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: var(--font-sans); }
+  .wf-screen {
+    background: #111;
+    border-radius: var(--border-radius-lg);
+    overflow: hidden;
+    border: 0.5px solid var(--color-border-secondary);
+    margin-bottom: 2rem;
+  }
+  .wf-label {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--color-text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.5rem;
+  }
+  .gold { color: #C8A96A; }
+  .crimson { color: #8B1A1A; }
+  .gold-bg { background: #C8A96A; }
+  .crimson-bg { background: #8B1A1A; }
+  .section-label {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-align: center;
+    padding: 6px;
+    border-top: 0.5px dashed #333;
+    border-bottom: 0.5px dashed #333;
+    background: #161616;
+  }
+
+  /* NAV */
+  .nav { display: flex; align-items: center; justify-content: space-between; padding: 12px 20px; background: #0d0d0d; border-bottom: 0.5px solid #C8A96A33; }
+  .nav-logo { display: flex; align-items: center; gap: 8px; }
+  .nav-logo-circle { width: 28px; height: 28px; border-radius: 50%; border: 1.5px solid #C8A96A; display: flex; align-items: center; justify-content: center; }
+  .nav-logo-inner { width: 14px; height: 14px; border-radius: 50%; background: #8B1A1A; }
+  .nav-logo-text { font-size: 11px; font-weight: 500; color: #C8A96A; letter-spacing: 0.04em; }
+  .nav-links { display: flex; gap: 16px; }
+  .nav-link { font-size: 10px; color: #aaa; }
+  .nav-link.active { color: #C8A96A; }
+  .nav-cta { font-size: 10px; color: #C8A96A; border: 0.5px solid #C8A96A; padding: 4px 10px; border-radius: 3px; }
+
+  /* HERO */
+  .hero { padding: 40px 20px 36px; text-align: center; background: #111; position: relative; overflow: hidden; }
+  .hero-geo { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; opacity: 0.04; }
+  .hero-badge { font-size: 10px; color: #C8A96A; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 12px; }
+  .hero-logo { width: 80px; height: 80px; border-radius: 50%; border: 2px solid #C8A96A; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; background: #0d0d0d; }
+  .hero-logo-inner { width: 50px; height: 50px; border-radius: 50%; background: #8B1A1A; display: flex; align-items: center; justify-content: center; }
+  .hero-logo-dot { width: 24px; height: 24px; border-radius: 50%; background: #C8A96A; opacity: 0.8; }
+  .hero-title { font-size: 18px; font-weight: 500; color: #C8A96A; line-height: 1.3; margin-bottom: 8px; font-family: var(--font-serif); }
+  .hero-sub { font-size: 12px; color: #999; line-height: 1.6; max-width: 280px; margin: 0 auto 20px; }
+  .hero-divider { display: flex; align-items: center; justify-content: center; gap: 8px; color: #C8A96A; font-size: 11px; margin-bottom: 20px; opacity: 0.6; }
+  .hero-divider-line { width: 60px; height: 0.5px; background: linear-gradient(90deg, transparent, #C8A96A); }
+  .hero-divider-line.rev { background: linear-gradient(90deg, #C8A96A, transparent); }
+  .hero-btns { display: flex; gap: 10px; justify-content: center; }
+  .btn-gold { background: #C8A96A; color: #111; font-size: 11px; font-weight: 500; padding: 8px 16px; border-radius: 3px; }
+  .btn-outline { border: 0.5px solid #C8A96A; color: #C8A96A; font-size: 11px; padding: 8px 16px; border-radius: 3px; }
+
+  /* ABOUT */
+  .about { padding: 28px 20px; background: #0d0d0d; }
+  .sec-title { font-size: 14px; font-weight: 500; color: #C8A96A; font-family: var(--font-serif); margin-bottom: 4px; }
+  .sec-arabic { font-size: 12px; color: #8B1A1A; margin-bottom: 12px; direction: rtl; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 14px; }
+  .about-card { background: #161616; border: 0.5px solid #C8A96A22; border-radius: 6px; padding: 10px 12px; }
+  .about-card-num { font-size: 18px; font-weight: 500; color: #C8A96A; opacity: 0.6; font-family: var(--font-serif); }
+  .about-card-label { font-size: 10px; color: #888; margin-top: 2px; }
+  .about-body { font-size: 11px; color: #aaa; line-height: 1.7; }
+
+  /* IMAMS */
+  .imams { padding: 28px 20px; background: #111; }
+  .imams-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-top: 14px; }
+  .imam-pill { background: #161616; border: 0.5px solid #C8A96A22; border-radius: 4px; padding: 8px 6px; text-align: center; }
+  .imam-num { font-size: 16px; color: #C8A96A; opacity: 0.5; font-family: var(--font-serif); }
+  .imam-name { font-size: 9px; color: #aaa; margin-top: 3px; line-height: 1.3; }
+  .imam-pill.active { border-color: #C8A96A66; }
+  .imam-pill.active .imam-num { opacity: 1; }
+  .imam-pill.active .imam-name { color: #C8A96A; }
+
+  /* CAMPAIGNS */
+  .campaigns { padding: 28px 20px; background: #0d0d0d; }
+  .campaign-card { background: #161616; border: 0.5px solid #C8A96A22; border-radius: 8px; padding: 14px; margin-top: 14px; }
+  .campaign-top { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; }
+  .campaign-name { font-size: 12px; color: #ddd; font-weight: 500; }
+  .campaign-badge { font-size: 9px; background: #8B1A1A22; color: #C87A6A; border: 0.5px solid #8B1A1A44; padding: 2px 8px; border-radius: 10px; }
+  .campaign-badge.done { background: #1a3322; color: #6AB88A; border-color: #2a5544; }
+  .progress-track { background: #2a2a2a; border-radius: 2px; height: 4px; margin-bottom: 6px; }
+  .progress-fill { height: 4px; border-radius: 2px; background: #C8A96A; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 10px; color: #666; }
+  .campaign-donate { margin-top: 12px; text-align: center; }
+  .btn-crimson { background: #8B1A1A; color: #C8A96A; font-size: 11px; font-weight: 500; padding: 8px 24px; border-radius: 3px; }
+
+  /* KNOWLEDGE HUB */
+  .hub { padding: 28px 20px; background: #111; }
+  .hub-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 14px; }
+  .hub-card { background: #161616; border: 0.5px solid #C8A96A22; border-radius: 6px; aspect-ratio: 9/16; display: flex; flex-direction: column; align-items: center; justify-content: space-between; padding: 10px 8px; }
+  .hub-card-top { width: 100%; }
+  .hub-card-arabic { font-size: 9px; color: #C8A96A; opacity: 0.7; direction: rtl; text-align: center; }
+  .hub-card-divider { width: 20px; height: 0.5px; background: #C8A96A; margin: 5px auto; opacity: 0.3; }
+  .hub-card-hadith { font-size: 8px; color: #aaa; text-align: center; line-height: 1.5; }
+  .hub-card-bottom { font-size: 7px; color: #C8A96A; opacity: 0.5; text-align: center; letter-spacing: 0.05em; }
+
+  /* EVENTS */
+  .events { padding: 28px 20px; background: #0d0d0d; }
+  .event-row { display: flex; align-items: center; gap: 12px; padding: 10px 0; border-bottom: 0.5px solid #1f1f1f; }
+  .event-date { width: 36px; height: 36px; border: 0.5px solid #C8A96A44; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .event-day { font-size: 13px; font-weight: 500; color: #C8A96A; line-height: 1; }
+  .event-month { font-size: 8px; color: #888; }
+  .event-info { flex: 1; }
+  .event-name { font-size: 11px; color: #ddd; }
+  .event-loc { font-size: 10px; color: #666; margin-top: 2px; }
+  .event-tag { font-size: 9px; color: #C8A96A; border: 0.5px solid #C8A96A44; padding: 2px 8px; border-radius: 10px; }
+
+  /* FOOTER */
+  .footer { padding: 24px 20px; background: #0a0a0a; border-top: 0.5px solid #C8A96A22; }
+  .footer-logo { text-align: center; margin-bottom: 14px; }
+  .footer-arabic { font-size: 14px; color: #C8A96A; opacity: 0.5; direction: rtl; }
+  .footer-links { display: flex; justify-content: center; gap: 16px; margin-bottom: 12px; }
+  .footer-link { font-size: 10px; color: #666; }
+  .footer-social { display: flex; justify-content: center; gap: 10px; margin-bottom: 12px; }
+  .social-btn { width: 28px; height: 28px; border: 0.5px solid #C8A96A33; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #C8A96A; }
+  .footer-copy { text-align: center; font-size: 10px; color: #444; }
+
+  .section-wrap { margin-bottom: 0; }
+</style>
+
+<div style="padding: 1rem 0;">
+  <p class="wf-label">Desktop + Mobile wireframe — thelesserknownimams.com</p>
+
+  <div style="display: grid; grid-template-columns: 1fr 360px; gap: 1.5rem; align-items: start;">
+
+    <div>
+      <p class="wf-label" style="margin-bottom: 0.5rem;">Desktop view</p>
+      <div class="wf-screen">
+
+        <div class="nav">
+          <div class="nav-logo">
+            <div class="nav-logo-circle"><div class="nav-logo-inner"></div></div>
+            <span class="nav-logo-text">THE LESSER KNOWN IMAMS</span>
+          </div>
+          <div class="nav-links">
+            <span class="nav-link active">Home</span>
+            <span class="nav-link">Imams</span>
+            <span class="nav-link">Hadiths</span>
+            <span class="nav-link">Majalis</span>
+            <span class="nav-link">About</span>
+          </div>
+          <div class="nav-cta">Join Community ↗</div>
+        </div>
+
+        <div class="section-label">01 — hero</div>
+        <div class="hero" style="padding: 60px 40px 50px; display: flex; align-items: center; gap: 40px;">
+          <div style="flex: 1;">
+            <div class="hero-badge">السلام عليكم يا أهل بيت النبوة</div>
+            <div class="hero-title" style="font-size: 26px; text-align: left; max-width: 400px;">Unveiling the Lives & Legacies of the Ahlul Bayt (as)</div>
+            <div class="hero-sub" style="text-align: left; max-width: 340px; font-size: 12px; margin: 12px 0 20px;">Dedicated to the Imams whose wisdom, sacrifice, and light are seldom spoken of — yet whose guidance shapes every moment of our faith.</div>
+            <div class="hero-btns" style="justify-content: flex-start;">
+              <div class="btn-gold">Join WhatsApp Community</div>
+              <div class="btn-outline">Explore Hadiths</div>
+            </div>
+          </div>
+          <div style="flex-shrink: 0;">
+            <div class="hero-logo" style="width: 140px; height: 140px; margin: 0;">
+              <div class="hero-logo-inner" style="width: 90px; height: 90px;">
+                <div class="hero-logo-dot" style="width: 40px; height: 40px;"></div>
+              </div>
+            </div>
+            <div style="text-align: center; margin-top: 8px; font-size: 9px; color: #444;">[ TLKI Logo ]</div>
+          </div>
+        </div>
+
+        <div class="section-label">02 — about the project</div>
+        <div class="about" style="padding: 36px 40px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
+            <div>
+              <div class="sec-title" style="font-size: 18px;">About the Project</div>
+              <div class="sec-arabic">وَمَن يُعَظِّمْ شَعَائِرَ اللَّهِ</div>
+              <div class="about-body" style="font-size: 12px;">Every year, the names of certain Imams are spoken only in passing — their hadiths unread, their sacrifices undiscussed. TLKI was born from a simple belief: that every Imam (as) deserves to be known.</div>
+            </div>
+            <div class="about-grid">
+              <div class="about-card"><div class="about-card-num">3–5</div><div class="about-card-label">Majalis per Imam per year</div></div>
+              <div class="about-card"><div class="about-card-num">9</div><div class="about-card-label">Imams in focus</div></div>
+              <div class="about-card"><div class="about-card-num">∞</div><div class="about-card-label">Hadiths to share</div></div>
+              <div class="about-card"><div class="about-card-num">5</div><div class="about-card-label">Founders & volunteers</div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">03 — imams in focus</div>
+        <div class="imams" style="padding: 36px 40px;">
+          <div class="sec-title" style="font-size: 18px;">The Imams (as)</div>
+          <div class="sec-arabic">أشهد أن عليا وليّ الله</div>
+          <div class="imams-grid" style="grid-template-columns: repeat(9, 1fr); margin-top: 16px;">
+            <div class="imam-pill active"><div class="imam-num">2nd</div><div class="imam-name">Imam Hasan (as)</div></div>
+            <div class="imam-pill"><div class="imam-num">5th</div><div class="imam-name">Imam Baqir (as)</div></div>
+            <div class="imam-pill active"><div class="imam-num">6th</div><div class="imam-name">Imam Sadiq (as)</div></div>
+            <div class="imam-pill"><div class="imam-num">7th</div><div class="imam-name">Imam Kazim (as)</div></div>
+            <div class="imam-pill"><div class="imam-num">8th</div><div class="imam-name">Imam Reza (as)</div></div>
+            <div class="imam-pill"><div class="imam-num">9th</div><div class="imam-name">Imam Jawad (as)</div></div>
+            <div class="imam-pill"><div class="imam-num">10th</div><div class="imam-name">Imam Hadi (as)</div></div>
+            <div class="imam-pill"><div class="imam-num">11th</div><div class="imam-name">Imam Askari (as)</div></div>
+            <div class="imam-pill"><div class="imam-num">12th</div><div class="imam-name">Imam Mahdi (atfs)</div></div>
+          </div>
+        </div>
+
+        <div class="section-label">04 — knowledge hub (hadith gallery)</div>
+        <div class="hub" style="padding: 36px 40px;">
+          <div class="sec-title" style="font-size: 18px;">Hadith Gallery</div>
+          <div class="sec-arabic">قال الإمام الصادق عليه السلام</div>
+          <div class="hub-grid" style="grid-template-columns: repeat(6, 1fr); margin-top: 16px;">
+            <div class="hub-card"><div class="hub-card-top"><div class="hub-card-arabic">الإمام الباقر</div><div class="hub-card-divider"></div><div class="hub-card-hadith">Knowledge is a shield…</div></div><div class="hub-card-bottom">TLKI</div></div>
+            <div class="hub-card"><div class="hub-card-top"><div class="hub-card-arabic">الإمام الصادق</div><div class="hub-card-divider"></div><div class="hub-card-hadith">The best of deeds…</div></div><div class="hub-card-bottom">TLKI</div></div>
+            <div class="hub-card"><div class="hub-card-top"><div class="hub-card-arabic">الإمام الرضا</div><div class="hub-card-divider"></div><div class="hub-card-hadith">Silence is wisdom…</div></div><div class="hub-card-bottom">TLKI</div></div>
+            <div class="hub-card"><div class="hub-card-top"><div class="hub-card-arabic">الإمام الكاظم</div><div class="hub-card-divider"></div><div class="hub-card-hadith">Patience is victory…</div></div><div class="hub-card-bottom">TLKI</div></div>
+            <div class="hub-card"><div class="hub-card-top"><div class="hub-card-arabic">الإمام الهادي</div><div class="hub-card-divider"></div><div class="hub-card-hadith">The heart that grieves…</div></div><div class="hub-card-bottom">TLKI</div></div>
+            <div class="hub-card" style="border-color: #C8A96A44; justify-content: center;"><div style="text-align:center; font-size: 10px; color: #C8A96A; opacity: 0.6;">View All →</div></div>
+          </div>
+        </div>
+
+        <div class="section-label">05 — upcoming majalis</div>
+        <div class="events" style="padding: 36px 40px;">
+          <div class="sec-title" style="font-size: 18px;">Upcoming Majalis</div>
+          <div class="sec-arabic">أقم المجالس في ذكر أهل البيت</div>
+          <div style="margin-top: 14px;">
+            <div class="event-row">
+              <div class="event-date"><div class="event-day">14</div><div class="event-month">May</div></div>
+              <div class="event-info"><div class="event-name">Shahadat of Imam Hasan Askari (as)</div><div class="event-loc">Mumbai · Venue TBC</div></div>
+              <div class="event-tag">Upcoming</div>
+            </div>
+            <div class="event-row">
+              <div class="event-date"><div class="event-day">22</div><div class="event-month">Jun</div></div>
+              <div class="event-info"><div class="event-name">Wiladat of Imam Baqir (as)</div><div class="event-loc">Online · Zoom</div></div>
+              <div class="event-tag">Register</div>
+            </div>
+            <div class="event-row" style="border-bottom: none;">
+              <div class="event-date" style="opacity:0.4"><div class="event-day">03</div><div class="event-month">Apr</div></div>
+              <div class="event-info"><div class="event-name" style="opacity:0.5">Shahadat of Imam Sadiq (as) — Khamsa</div><div class="event-loc" style="opacity:0.5">Mumbai · Completed</div></div>
+              <div class="event-tag" style="background: #1a3322; color: #6AB88A; border-color: #2a5544;">Done</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">06 — footer</div>
+        <div class="footer">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div class="footer-arabic">السلام عليكم يا أهل بيت النبوة</div>
+            <div class="footer-links">
+              <span class="footer-link">Home</span>
+              <span class="footer-link">Hadiths</span>
+              <span class="footer-link">Majalis</span>
+              <span class="footer-link">Donate</span>
+              <span class="footer-link">Contact</span>
+            </div>
+            <div class="footer-social">
+              <div class="social-btn">W</div>
+              <div class="social-btn">IG</div>
+              <div class="social-btn">YT</div>
+            </div>
+          </div>
+          <div class="footer-copy" style="margin-top: 16px;">© 2025 The Lesser Known Imams (as) · Made with love for the Ahlul Bayt</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div>
+      <p class="wf-label" style="margin-bottom: 0.5rem;">Mobile view</p>
+      <div class="wf-screen" style="max-width: 360px;">
+
+        <div class="nav" style="padding: 10px 14px;">
+          <div class="nav-logo">
+            <div class="nav-logo-circle"><div class="nav-logo-inner"></div></div>
+            <span class="nav-logo-text" style="font-size: 10px;">TLKI</span>
+          </div>
+          <div style="display: flex; gap: 8px; align-items: center;">
+            <div class="nav-cta" style="font-size: 9px; padding: 3px 8px;">Join ↗</div>
+            <div style="width: 18px; height: 12px; display: flex; flex-direction: column; gap: 3px; justify-content: center;">
+              <div style="height: 1px; background: #C8A96A;"></div>
+              <div style="height: 1px; background: #C8A96A;"></div>
+              <div style="height: 1px; background: #C8A96A;"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-label">01 — hero</div>
+        <div class="hero">
+          <div class="hero-badge">السلام عليكم يا أهل بيت النبوة</div>
+          <div class="hero-logo">
+            <div class="hero-logo-inner"><div class="hero-logo-dot"></div></div>
+          </div>
+          <div class="hero-title">The Lesser Known Imams (as)</div>
+          <div class="hero-sub">Dedicated to the Imams whose wisdom is seldom spoken — yet whose guidance shapes our faith.</div>
+          <div class="hero-divider"><div class="hero-divider-line"></div><span>◈</span><div class="hero-divider-line rev"></div></div>
+          <div class="hero-btns" style="flex-direction: column; align-items: center; gap: 8px;">
+            <div class="btn-gold" style="width: 200px; text-align: center;">Join WhatsApp Community</div>
+            <div class="btn-outline" style="width: 200px; text-align: center;">Explore Hadiths</div>
+          </div>
+        </div>
+
+        <div class="section-label">02 — about</div>
+        <div class="about">
+          <div class="sec-title">About the Project</div>
+          <div class="sec-arabic">وَمَن يُعَظِّمْ شَعَائِرَ اللَّهِ</div>
+          <div class="about-body">Every year, the names of certain Imams are spoken only in passing. TLKI was born from a simple belief: every Imam (as) deserves to be known.</div>
+          <div class="about-grid" style="margin-top: 14px;">
+            <div class="about-card"><div class="about-card-num">3–5</div><div class="about-card-label">Majalis / Imam / year</div></div>
+            <div class="about-card"><div class="about-card-num">9</div><div class="about-card-label">Imams in focus</div></div>
+          </div>
+        </div>
+
+        <div class="section-label">03 — imam tabs</div>
+        <div class="imams">
+          <div class="sec-title">The Imams (as)</div>
+          <div style="display: flex; overflow-x: auto; gap: 6px; margin-top: 12px; padding-bottom: 4px;">
+            <div class="imam-pill active" style="flex-shrink: 0; min-width: 60px;"><div class="imam-num">2nd</div><div class="imam-name">Imam Hasan</div></div>
+            <div class="imam-pill" style="flex-shrink: 0; min-width: 60px;"><div class="imam-num">5th</div><div class="imam-name">Imam Baqir</div></div>
+            <div class="imam-pill" style="flex-shrink: 0; min-width: 60px;"><div class="imam-num">6th</div><div class="imam-name">Imam Sadiq</div></div>
+            <div class="imam-pill" style="flex-shrink: 0; min-width: 60px;"><div class="imam-num">7th</div><div class="imam-name">Imam Kazim</div></div>
+            <div class="imam-pill" style="flex-shrink: 0; min-width: 60px;"><div class="imam-num">8th</div><div class="imam-name">Imam Reza</div></div>
+          </div>
+          <div style="font-size: 9px; color: #555; margin-top: 4px; text-align: right;">← scroll →</div>
+        </div>
+
+        <div class="section-label">04 — hadith gallery</div>
+        <div class="hub">
+          <div class="sec-title">Hadith Gallery</div>
+          <div class="hub-grid">
+            <div class="hub-card"><div class="hub-card-top"><div class="hub-card-arabic">الإمام الباقر</div><div class="hub-card-divider"></div><div class="hub-card-hadith">Knowledge is a shield…</div></div><div class="hub-card-bottom">TLKI</div></div>
+            <div class="hub-card"><div class="hub-card-top"><div class="hub-card-arabic">الإمام الصادق</div><div class="hub-card-divider"></div><div class="hub-card-hadith">The best of deeds…</div></div><div class="hub-card-bottom">TLKI</div></div>
+            <div class="hub-card" style="border-color: #C8A96A44; justify-content: center;"><div style="text-align:center; font-size: 10px; color: #C8A96A; opacity: 0.6;">View All →</div></div>
+          </div>
+        </div>
+
+        <div class="section-label">05 — upcoming majalis</div>
+        <div class="events">
+          <div class="sec-title">Upcoming Majalis</div>
+          <div class="event-row">
+            <div class="event-date"><div class="event-day">14</div><div class="event-month">May</div></div>
+            <div class="event-info"><div class="event-name">Shahadat — Imam Askari (as)</div><div class="event-loc">Mumbai · Venue TBC</div></div>
+            <div class="event-tag">Soon</div>
+          </div>
+          <div class="event-row" style="border-bottom: none;">
+            <div class="event-date" style="opacity:0.4"><div class="event-day">03</div><div class="event-month">Apr</div></div>
+            <div class="event-info"><div class="event-name" style="opacity:0.5">Imam Sadiq (as) Khamsa</div><div class="event-loc" style="opacity:0.5">Completed</div></div>
+            <div class="event-tag" style="background: #1a3322; color: #6AB88A; border-color: #2a5544;">Done</div>
+          </div>
+        </div>
+
+        <div class="section-label">06 — footer</div>
+        <div class="footer">
+          <div class="footer-arabic" style="text-align: center; display: block;">السلام عليكم يا أهل بيت النبوة</div>
+          <div class="footer-social" style="margin-top: 12px;">
+            <div class="social-btn">W</div>
+            <div class="social-btn">IG</div>
+            <div class="social-btn">YT</div>
+          </div>
+          <div class="footer-copy">© 2025 The Lesser Known Imams (as)</div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
