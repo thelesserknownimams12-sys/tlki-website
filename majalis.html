@@ -8,6 +8,9 @@
   <link rel="icon" type="image/jpeg" href="assets/tlki-logo.jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://www.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
 </head>
@@ -98,7 +101,18 @@
         return (text||'').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
       }
 
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
       var SEED_MAJALIS = [
+        {imam:'Sayyida Fatima Zahra (sa)',title:'Ayyam-e-Fatimiyyah (sa) — Khamsa Majalis',detail:'5-Day Majalis Series Commemorating the Shahadat of Sayyida Fatima Zahra (sa)',startDate:'10 Dec 2025',endDate:'14 Dec 2025',hijri:'Jumada al-Thani',status:'upcoming',description:'Special 5-day Khamsa majalis series commemorating the martyrdom of Sayyida Fatima Zahra (sa), her sublime sermons, virtues, and the sacred legacy of the Prophet\'s Ahlul Bayt (as).',youtubeUrl:'',posterUrl:'',speaker:'Ulama & Zakireen-e-Ahlul Bayt (as)',location:'TLKI Community & Live Broadcast'},
         {imam:'Imam Hadi (as)',title:'Shahadat of Imam Ali al-Naqi (as)',detail:'Also: Wiladat of Imam Mohammad al-Baqir (as)',startDate:'22 Dec 2025',endDate:'26 Dec 2025',hijri:'1st–5th Rajab',status:'upcoming',description:'Majalis gatherings commemorating the Shahadat of Imam Ali al-Naqi (as) and celebrating the Wiladat of Imam Mohammad al-Baqir (as).',youtubeUrl:'https://www.youtube.com/watch?v=8UymIdHg3fc',posterUrl:'',speaker:'',location:''},
         {imam:'Imam Kazim (as)',title:'Shahadat of Imam Al Kazim (as)',detail:'Also: Wiladat of Janabe Ali Asgar, Wafat of Abu Talib, Be\'sat',startDate:'12 Jan 2026',endDate:'16 Jan 2026',hijri:'22nd–25th Rajab',status:'upcoming',description:'Commemorating the Shahadat of Imam Musa al-Kazim (as) along with the Wiladat of Janabe Ali Asgar and Wafat of Abu Talib.',youtubeUrl:'',posterUrl:'',speaker:'',location:''},
         {imam:'Imam Sadiq (as)',title:'Shahadat of Imam Jafar al-Sadiq (as)',detail:'',startDate:'9 Apr 2026',endDate:'13 Apr 2026',hijri:'21st–25th Shawwal',status:'upcoming',description:'Majalis commemorating the Shahadat of Imam Jafar al-Sadiq (as), the 6th Imam of the Ahlul Bayt.',youtubeUrl:'',posterUrl:'',speaker:'',location:''},
@@ -118,15 +132,15 @@
         data.forEach(function(m, i) {
           var statusClass = (m.status || 'upcoming');
           var posterHtml = m.posterUrl
-            ? '<img src="' + m.posterUrl + '" alt="' + (m.title||'') + '" class="majalis-card-poster" onerror="this.style.display=\'none\'">'
-            : '';
+            ? '<img src="' + escapeHtml(m.posterUrl) + '" alt="' + escapeHtml(m.title||'') + '" class="majalis-card-poster" onerror="this.style.display=\'none\'">'
+            : '<div class="majalis-card-poster-placeholder"><div class="majalis-card-poster-icon">' + escapeHtml(m.imam ? m.imam.charAt(0) : 'M') + '</div><div class="majalis-card-poster-label">TLKI Majalis</div></div>';
           html += '<a href="majlis.html?id=' + (m._key || 'seed_'+i) + '" class="majalis-card fade-in">'
             + posterHtml
             + '<div class="majalis-card-body">'
-            + '<div class="majalis-card-imam">' + (m.imam||'') + '</div>'
-            + '<div class="majalis-card-title">' + (m.title||'') + '</div>'
-            + '<div class="majalis-card-meta">' + (m.startDate||'') + (m.endDate && m.endDate !== m.startDate ? ' → ' + m.endDate : '') + (m.hijri ? ' · ' + m.hijri : '') + '</div>'
-            + '<span class="majalis-card-status ' + statusClass + '">' + (m.status || 'Upcoming') + '</span>'
+            + '<div class="majalis-card-imam">' + escapeHtml(m.imam||'') + '</div>'
+            + '<div class="majalis-card-title">' + escapeHtml(m.title||'') + '</div>'
+            + '<div class="majalis-card-meta">' + escapeHtml(m.startDate||'') + (m.endDate && m.endDate !== m.startDate ? ' → ' + escapeHtml(m.endDate) : '') + (m.hijri ? ' · ' + escapeHtml(m.hijri) : '') + '</div>'
+            + '<span class="majalis-card-status ' + statusClass + '">' + escapeHtml(m.status || 'Upcoming') + '</span>'
             + '</div></a>';
         });
         grid.innerHTML = html;

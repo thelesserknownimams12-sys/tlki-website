@@ -8,6 +8,9 @@
   <link rel="icon" type="image/jpeg" href="assets/tlki-logo.jpeg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+  <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+  <link rel="dns-prefetch" href="https://www.gstatic.com">
   <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="styles.css">
   <style>
@@ -18,15 +21,18 @@
     .hadith-filter-btn:hover, .hadith-filter-btn.active { background: #C8A96A; color: #0d0d0d; border-color: #C8A96A; }
     .hadiths-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
     .hadith-card-sec { background: #161616; border: 1px solid #C8A96A18; border-radius: var(--radius-md); padding: 0; cursor: pointer; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
-    .hadith-card-sec:hover { border-color: #C8A96A44; transform: translateY(-3px); box-shadow: 0 6px 24px rgba(200,169,106,0.06); }
+    .hadith-card-sec:hover { border-color: #C8A96A44; transform: translateY(-3px); box-shadow: 0 6px 24px rgba(200,169,106,0.08); }
     .hadith-card-image { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; border-bottom: 1px solid #C8A96A15; }
     .hadith-card-body { padding: 22px 24px; display: flex; flex-direction: column; flex: 1; min-width: 0; overflow: hidden; }
-    .hadith-card-arabic { font-family: 'Amiri', serif; font-size: 17px; color: #C8A96A; letter-spacing: 0.02em; margin-bottom: 2px; direction: rtl; text-align: right; line-height: 1.8; overflow-wrap: break-word; word-break: break-word; }
-    .hadith-card-divider { height: 1px; background: #C8A96A22; margin: 14px 0; }
-    .hadith-card-hadith { font-family: 'Inter', sans-serif; font-size: 15px; color: #d0d0d0; line-height: 1.75; flex: 1; overflow-wrap: break-word; word-break: break-word; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; }
+    .hadith-card-top-meta { display: flex; justify-content: space-between; align-items: center; gap: 8px; margin-bottom: 10px; flex-wrap: wrap; }
+    .hadith-card-badge { font-size: 11px; text-transform: uppercase; letter-spacing: 0.08em; color: #C8A96A; background: rgba(200, 169, 106, 0.1); padding: 3px 10px; border-radius: 10px; border: 1px solid rgba(200, 169, 106, 0.2); font-weight: 500; }
+    .hadith-card-imam-ar { font-family: 'Amiri', serif; font-size: 15px; color: #C8A96A; direction: rtl; text-align: right; }
+    .hadith-card-arabic-text { font-family: 'Amiri', serif; font-size: 18px; color: #dfcca0; direction: rtl; text-align: right; line-height: 2.1; margin: 8px 0 10px; font-feature-settings: 'liga' 1, 'calt' 1; overflow-wrap: break-word; word-break: break-word; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden; }
+    .hadith-card-divider { height: 1px; background: #C8A96A22; margin: 12px 0; }
+    .hadith-card-hadith { font-family: 'Inter', sans-serif; font-size: 14.5px; color: #d0d0d0; line-height: 1.75; flex: 1; overflow-wrap: break-word; word-break: break-word; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 5; -webkit-box-orient: vertical; }
     .hadith-card-narrator { font-family: 'Inter', sans-serif; font-size: 13px; color: #C8A96A; margin-top: 12px; font-weight: 500; }
-    .hadith-card-ref { font-family: 'Inter', sans-serif; font-size: 12px; color: #666; margin-top: 4px; font-style: italic; }
-    .hadith-card-bottom { font-family: 'Inter', sans-serif; font-size: 11px; color: #444; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 14px; }
+    .hadith-card-ref { font-family: 'Inter', sans-serif; font-size: 12px; color: #777; margin-top: 4px; font-style: italic; }
+    .hadith-card-bottom { font-family: 'Inter', sans-serif; font-size: 11px; color: #555; letter-spacing: 0.08em; margin-top: 14px; display: flex; justify-content: space-between; align-items: center; }
     .hadith-modal-overlay { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; }
     .hadith-modal-overlay.active { display: flex; }
     .hadith-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
@@ -34,24 +40,22 @@
     .hadith-modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #888; font-size: 28px; cursor: pointer; transition: color 0.2s; }
     .hadith-modal-close:hover { color: #C8A96A; }
     .hadith-modal-image { width: 100%; border-radius: 10px; margin-bottom: 20px; display: block; }
-    .hadith-modal-arabic { font-family: 'Amiri', serif; font-size: 24px; color: #C8A96A; margin-bottom: 6px; direction: rtl; text-align: right; line-height: 1.9; overflow-wrap: break-word; word-break: break-word; }
-    .hadith-modal-arabic-text { font-family: 'Amiri', serif; font-size: 20px; color: #C8A96A; margin-top: 16px; margin-bottom: 6px; direction: rtl; text-align: right; line-height: 2; background: rgba(200,169,106,0.05); border-radius: 10px; padding: 16px 20px; border: 1px solid #C8A96A18; overflow-wrap: break-word; word-break: break-word; white-space: pre-line; }
+    .hadith-modal-arabic { font-family: 'Amiri', serif; font-size: 20px; color: #C8A96A; margin-bottom: 8px; direction: rtl; text-align: right; line-height: 1.8; }
+    .hadith-modal-arabic-text { font-family: 'Amiri', serif; font-size: 22px; color: #f0deb4; margin-top: 12px; margin-bottom: 12px; direction: rtl; text-align: right; line-height: 2.2; background: rgba(200,169,106,0.06); border-radius: 10px; padding: 18px 22px; border: 1px solid rgba(200,169,106,0.2); overflow-wrap: break-word; word-break: break-word; white-space: pre-line; font-feature-settings: 'liga' 1, 'calt' 1; }
     .hadith-modal-divider { height: 1px; background: #C8A96A22; margin: 16px 0; }
-    .hadith-modal-text { font-family: 'Inter', sans-serif; font-size: 17px; color: #e0e0e0; line-height: 1.85; overflow-wrap: break-word; word-break: break-word; white-space: pre-line; }
-    .hadith-modal-narrator { font-family: 'Inter', sans-serif; font-size: 16px; color: #C8A96A; margin-top: 12px; font-weight: 500; }
-    .hadith-modal-ref { font-family: 'Inter', sans-serif; font-size: 14px; color: #777; margin-top: 8px; font-style: italic; }
+    .hadith-modal-text { font-family: 'Inter', sans-serif; font-size: 16.5px; color: #e5e5e5; line-height: 1.85; overflow-wrap: break-word; word-break: break-word; white-space: pre-line; }
+    .hadith-modal-narrator { font-family: 'Inter', sans-serif; font-size: 15px; color: #C8A96A; margin-top: 14px; font-weight: 500; }
+    .hadith-modal-ref { font-family: 'Inter', sans-serif; font-size: 13.5px; color: #888; margin-top: 6px; font-style: italic; }
     .hadith-modal-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #555; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 20px; }
     @media (max-width: 1024px) { .hadiths-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 768px) {
       .hadiths-page { padding: 48px 0; }
       .hadiths-grid { grid-template-columns: 1fr; }
-      .hadith-card-body { padding: 16px 18px; }
-      .hadith-card-hadith { font-size: 14px; }
-      .hadith-card-arabic { font-size: 16px; }
-      .hadith-modal-panel { padding: 28px; }
-      .hadith-modal-text { font-size: 16px; }
-      .hadith-modal-arabic { font-size: 20px; }
-      .hadith-modal-arabic-text { font-size: 18px; }
+      .hadith-card-body { padding: 18px 20px; }
+      .hadith-card-arabic-text { font-size: 17px; }
+      .hadith-modal-panel { padding: 26px; }
+      .hadith-modal-arabic-text { font-size: 19px; padding: 14px 16px; }
+      .hadith-modal-text { font-size: 15.5px; }
     }
   </style>
 </head>
@@ -157,19 +161,33 @@
       var grid = document.getElementById('fatimiyyahGrid');
       var FATIMIYYAH_LIVE = typeof FATIMIYYAH_HADITHS !== 'undefined' ? FATIMIYYAH_HADITHS : [];
 
+      function escapeHtml(str) {
+        if (!str) return '';
+        return String(str)
+          .replace(/&/g, '&amp;')
+          .replace(/</g, '&lt;')
+          .replace(/>/g, '&gt;')
+          .replace(/"/g, '&quot;')
+          .replace(/'/g, '&#39;');
+      }
+
       function renderCards() {
         var html = '';
         FATIMIYYAH_LIVE.forEach(function(h) {
-          var imgHtml = h.imageUrl ? '<img src="' + h.imageUrl + '" alt="" class="hadith-card-image" onerror="this.style.display=\'none\'">' : '';
-          html += '<div class="hadith-card-sec fade-in" data-id="' + h.id + '">'
+          var imgHtml = h.imageUrl ? '<img src="' + escapeHtml(h.imageUrl) + '" alt="" class="hadith-card-image" onerror="this.style.display=\'none\'">' : '';
+          html += '<div class="hadith-card-sec fade-in" data-id="' + escapeHtml(h.id) + '">'
             + imgHtml
             + '<div class="hadith-card-body">'
-            + '<div class="hadith-card-arabic">' + (h.imam || 'سيدة نساء العالمين') + '</div>'
+            + '<div class="hadith-card-top-meta">'
+            + '<span class="hadith-card-badge">' + escapeHtml(h.imamEn || 'Fatimiyyah') + '</span>'
+            + '<span class="hadith-card-imam-ar" dir="rtl" lang="ar">' + escapeHtml(h.imam || 'سيدة نساء العالمين') + '</span>'
+            + '</div>'
+            + (h.hadithAr ? '<div class="hadith-card-arabic-text" dir="rtl" lang="ar">' + escapeHtml(h.hadithAr) + '</div>' : '')
             + '<div class="hadith-card-divider"></div>'
-            + '<div class="hadith-card-hadith">"' + h.hadith + '"</div>'
-            + '<div class="hadith-card-narrator">— ' + (h.narrator || h.imamEn || '') + '</div>'
-            + '<div class="hadith-card-ref">' + h.reference + '</div>'
-            + '<div class="hadith-card-bottom">TLKI · Ayyam-e-Fatimiyyah</div>'
+            + '<div class="hadith-card-hadith">"' + escapeHtml(h.hadith) + '"</div>'
+            + '<div class="hadith-card-narrator">— ' + escapeHtml(h.narrator || h.imamEn || '') + '</div>'
+            + '<div class="hadith-card-ref">' + escapeHtml(h.reference || '') + '</div>'
+            + '<div class="hadith-card-bottom"><span>TLKI · Ayyam-e-Fatimiyyah</span><span style="color:var(--gold);opacity:0.8">Read full →</span></div>'
             + '</div></div>';
         });
         grid.innerHTML = html;
