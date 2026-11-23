@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Ayyam-e-Fatimiyyah (sa) — Narrations, Merits, and Tragedies of Sayyida Fatima al-Zahra (sa)">
+  <title>Ayyam-e-Fatimiyyah (sa) — The Lesser Known Imams (as)</title>
+  <link rel="icon" type="image/jpeg" href="assets/tlki-logo.jpeg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Playfair+Display:wght@400;500;600&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .hadiths-page { padding: 80px 0; background: var(--bg); min-height: 100vh; }
+    .hadiths-intro { font-size: 15px; color: var(--text-dim); margin-bottom: 20px; line-height: 1.7; max-width: 680px; }
+    .hadith-filter { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 24px; }
+    .hadith-filter-btn { padding: 8px 20px; border: 1px solid #C8A96A33; border-radius: 24px; color: #aaa; font-size: 14px; font-family: var(--font-sans); cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; background: transparent; }
+    .hadith-filter-btn:hover, .hadith-filter-btn.active { background: #C8A96A; color: #0d0d0d; border-color: #C8A96A; }
+    .hadiths-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+    .hadith-card-sec { background: #161616; border: 1px solid #C8A96A18; border-radius: var(--radius-md); padding: 0; cursor: pointer; transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s; display: flex; flex-direction: column; overflow: hidden; min-width: 0; }
+    .hadith-card-sec:hover { border-color: #C8A96A44; transform: translateY(-3px); box-shadow: 0 6px 24px rgba(200,169,106,0.06); }
+    .hadith-card-image { width: 100%; aspect-ratio: 16/10; object-fit: cover; display: block; border-bottom: 1px solid #C8A96A15; }
+    .hadith-card-body { padding: 22px 24px; display: flex; flex-direction: column; flex: 1; min-width: 0; overflow: hidden; }
+    .hadith-card-arabic { font-family: 'Amiri', serif; font-size: 17px; color: #C8A96A; letter-spacing: 0.02em; margin-bottom: 2px; direction: rtl; text-align: right; line-height: 1.8; overflow-wrap: break-word; word-break: break-word; }
+    .hadith-card-divider { height: 1px; background: #C8A96A22; margin: 14px 0; }
+    .hadith-card-hadith { font-family: 'Inter', sans-serif; font-size: 15px; color: #d0d0d0; line-height: 1.75; flex: 1; overflow-wrap: break-word; word-break: break-word; overflow: hidden; display: -webkit-box; -webkit-line-clamp: 6; -webkit-box-orient: vertical; }
+    .hadith-card-narrator { font-family: 'Inter', sans-serif; font-size: 13px; color: #C8A96A; margin-top: 12px; font-weight: 500; }
+    .hadith-card-ref { font-family: 'Inter', sans-serif; font-size: 12px; color: #666; margin-top: 4px; font-style: italic; }
+    .hadith-card-bottom { font-family: 'Inter', sans-serif; font-size: 11px; color: #444; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 14px; }
+    .hadith-modal-overlay { position: fixed; inset: 0; z-index: 1000; display: none; align-items: center; justify-content: center; }
+    .hadith-modal-overlay.active { display: flex; }
+    .hadith-modal-bg { position: absolute; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(4px); }
+    .hadith-modal-panel { position: relative; background: #1a1a1a; border: 1px solid #C8A96A33; border-radius: 14px; max-width: 680px; width: 90%; padding: 40px; z-index: 1; max-height: 85vh; overflow-y: auto; }
+    .hadith-modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; color: #888; font-size: 28px; cursor: pointer; transition: color 0.2s; }
+    .hadith-modal-close:hover { color: #C8A96A; }
+    .hadith-modal-image { width: 100%; border-radius: 10px; margin-bottom: 20px; display: block; }
+    .hadith-modal-arabic { font-family: 'Amiri', serif; font-size: 24px; color: #C8A96A; margin-bottom: 6px; direction: rtl; text-align: right; line-height: 1.9; overflow-wrap: break-word; word-break: break-word; }
+    .hadith-modal-arabic-text { font-family: 'Amiri', serif; font-size: 20px; color: #C8A96A; margin-top: 16px; margin-bottom: 6px; direction: rtl; text-align: right; line-height: 2; background: rgba(200,169,106,0.05); border-radius: 10px; padding: 16px 20px; border: 1px solid #C8A96A18; overflow-wrap: break-word; word-break: break-word; white-space: pre-line; }
+    .hadith-modal-divider { height: 1px; background: #C8A96A22; margin: 16px 0; }
+    .hadith-modal-text { font-family: 'Inter', sans-serif; font-size: 17px; color: #e0e0e0; line-height: 1.85; overflow-wrap: break-word; word-break: break-word; white-space: pre-line; }
+    .hadith-modal-narrator { font-family: 'Inter', sans-serif; font-size: 16px; color: #C8A96A; margin-top: 12px; font-weight: 500; }
+    .hadith-modal-ref { font-family: 'Inter', sans-serif; font-size: 14px; color: #777; margin-top: 8px; font-style: italic; }
+    .hadith-modal-label { font-family: 'Inter', sans-serif; font-size: 11px; color: #555; letter-spacing: 0.1em; text-transform: uppercase; margin-top: 20px; }
+    @media (max-width: 1024px) { .hadiths-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 768px) {
+      .hadiths-page { padding: 48px 0; }
+      .hadiths-grid { grid-template-columns: 1fr; }
+      .hadith-card-body { padding: 16px 18px; }
+      .hadith-card-hadith { font-size: 14px; }
+      .hadith-card-arabic { font-size: 16px; }
+      .hadith-modal-panel { padding: 28px; }
+      .hadith-modal-text { font-size: 16px; }
+      .hadith-modal-arabic { font-size: 20px; }
+      .hadith-modal-arabic-text { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="nav">
+    <a href="index.html" class="nav-logo">
+      <img src="assets/tlki-logo.jpeg" alt="TLKI" class="nav-logo-img">
+      <span class="nav-logo-text">THE LESSER KNOWN IMAMS (as)</span>
+      <span class="nav-logo-text-short">TLKI (as)</span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html" class="nav-link">Home</a>
+      <a href="about.html" class="nav-link">About</a>
+      <a href="imams.html" class="nav-link">Imams</a>
+      <a href="hadiths.html" class="nav-link">Hadiths</a>
+      <a href="support.html" class="nav-link">Support</a>
+      <a href="majalis.html" class="nav-link">Majalis</a>
+      <a href="fatimiyyah.html" class="nav-link active">Ayyam-e-Fatimiyyah (sa)</a>
+      <a href="contribute.html" class="nav-link">Contribute</a>
+      <a href="contact.html" class="nav-link">Contact</a>
+    </div>
+    <a href="https://chat.whatsapp.com/GLehgiD3m7d7w3pOgBCcWZ" target="_blank" rel="noopener" class="nav-cta">Join Community ↗</a>
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu"><span></span><span></span><span></span></button>
+  </nav>
+
+  <div class="mobile-menu" id="mobileMenu">
+     <a href="index.html" class="mobile-menu-link">Home</a>
+     <a href="about.html" class="mobile-menu-link">About</a>
+     <a href="imams.html" class="mobile-menu-link">Imams</a>
+     <a href="hadiths.html" class="mobile-menu-link">Hadiths</a>
+     <a href="support.html" class="mobile-menu-link">Support</a>
+     <a href="majalis.html" class="mobile-menu-link">Majalis</a>
+     <a href="fatimiyyah.html" class="mobile-menu-link">Ayyam-e-Fatimiyyah (sa)</a>
+     <a href="contribute.html" class="mobile-menu-link">Contribute</a>
+     <a href="contact.html" class="mobile-menu-link">Contact</a>
+     <a href="https://chat.whatsapp.com/GLehgiD3m7d7w3pOgBCcWZ" target="_blank" rel="noopener" class="mobile-menu-cta">Join Community ↗</a>
+  </div>
+
+  <section class="hadiths-page">
+    <div class="container">
+      <h2 class="sec-title">Ayyam-e-Fatimiyyah (sa)</h2>
+      <p class="hadiths-intro">Authentic narrations, merits, and commemorations honoring Sayyida Fatima al-Zahra (s.a.) — The Leader of the Women of Paradise.</p>
+      <div class="hadiths-grid" id="fatimiyyahGrid"></div>
+    </div>
+  </section>
+
+  <div class="hadith-modal-overlay" id="hadithModal">
+    <div class="hadith-modal-bg" id="hadithModalBg"></div>
+    <div class="hadith-modal-panel">
+      <button class="hadith-modal-close" id="hadithModalClose" aria-label="Close">×</button>
+      <img class="hadith-modal-image" id="hadithModalImage" style="display:none" alt="">
+      <div class="hadith-modal-arabic" id="hadithModalArabic"></div>
+      <div class="hadith-modal-arabic-text" id="hadithModalArabicText" style="display:none;"></div>
+      <div class="hadith-modal-divider"></div>
+      <div class="hadith-modal-text" id="hadithModalText"></div>
+      <div class="hadith-modal-narrator" id="hadithModalNarrator"></div>
+      <div class="hadith-modal-ref" id="hadithModalRef"></div>
+      <div class="hadith-modal-label">TLKI · Ayyam-e-Fatimiyyah (sa)</div>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-top">
+        <div class="footer-arabic">السلام عليكِ يا فاطمة الزهراء سيدة نساء العالمين</div>
+        <div class="footer-links">
+           <a href="index.html" class="footer-link">Home</a>
+           <a href="about.html" class="footer-link">About</a>
+           <a href="hadiths.html" class="footer-link">Hadiths</a>
+           <a href="majalis.html" class="footer-link">Majalis</a>
+           <a href="fatimiyyah.html" class="footer-link">Ayyam-e-Fatimiyyah (sa)</a>
+           <a href="contribute.html" class="footer-link">Contribute</a>
+           <a href="contact.html" class="footer-link">Contact</a>
+        </div>
+        <div class="footer-social">
+           <a href="https://chat.whatsapp.com/GLehgiD3m7d7w3pOgBCcWZ" target="_blank" rel="noopener" class="social-btn" aria-label="WhatsApp">W</a>
+           <a href="https://www.youtube.com/watch?v=8UymIdHg3fc" target="_blank" rel="noopener" class="social-btn" aria-label="YouTube">YT</a>
+        </div>
+      </div>
+      <div class="footer-copy">© 2025 The Lesser Known Imams (as) · Made with love for the Ahlul Bayt (as)</div>
+    </div>
+  </footer>
+
+  <script src="fatimiyyah-data.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
+  <script src="script.js"></script>
+
+  <script>
+    (function() {
+      var firebaseConfig = {
+        apiKey: "AIzaSyBCZskOsHR9ij30pNrmzuxbs4P6cQMl5dg",
+        authDomain: "tlki-hadiths.firebaseapp.com",
+        databaseURL: "https://tlki-hadiths-default-rtdb.firebaseio.com",
+        projectId: "tlki-hadiths",
+        storageBucket: "tlki-hadiths.firebasestorage.app",
+        messagingSenderId: "792477774090",
+        appId: "1:792477774090:web:7cc8718e5ae8f060d70af3"
+      };
+      firebase.initializeApp(firebaseConfig);
+      var db = firebase.database();
+      var grid = document.getElementById('fatimiyyahGrid');
+      var FATIMIYYAH_LIVE = typeof FATIMIYYAH_HADITHS !== 'undefined' ? FATIMIYYAH_HADITHS : [];
+
+      function renderCards() {
+        var html = '';
+        FATIMIYYAH_LIVE.forEach(function(h) {
+          var imgHtml = h.imageUrl ? '<img src="' + h.imageUrl + '" alt="" class="hadith-card-image" onerror="this.style.display=\'none\'">' : '';
+          html += '<div class="hadith-card-sec fade-in" data-id="' + h.id + '">'
+            + imgHtml
+            + '<div class="hadith-card-body">'
+            + '<div class="hadith-card-arabic">' + (h.imam || 'سيدة نساء العالمين') + '</div>'
+            + '<div class="hadith-card-divider"></div>'
+            + '<div class="hadith-card-hadith">"' + h.hadith + '"</div>'
+            + '<div class="hadith-card-narrator">— ' + (h.narrator || h.imamEn || '') + '</div>'
+            + '<div class="hadith-card-ref">' + h.reference + '</div>'
+            + '<div class="hadith-card-bottom">TLKI · Ayyam-e-Fatimiyyah</div>'
+            + '</div></div>';
+        });
+        grid.innerHTML = html;
+        grid.querySelectorAll('.fade-in').forEach(function(el) { el.classList.add('visible'); });
+        bindModal();
+      }
+
+      var modal = document.getElementById('hadithModal');
+      var modalBg = document.getElementById('hadithModalBg');
+      var closeBtn = document.getElementById('hadithModalClose');
+      var modalArabic = document.getElementById('hadithModalArabic');
+      var modalArabicText = document.getElementById('hadithModalArabicText');
+      var modalText = document.getElementById('hadithModalText');
+      var modalNarrator = document.getElementById('hadithModalNarrator');
+      var modalRef = document.getElementById('hadithModalRef');
+
+      function bindModal() {
+        grid.querySelectorAll('.hadith-card-sec').forEach(function(card) {
+          card.addEventListener('click', function() {
+            var id = parseInt(card.getAttribute('data-id'));
+            var h = FATIMIYYAH_LIVE.find(function(x) { return x.id === id; });
+            if (h) {
+              var modalImg = document.getElementById('hadithModalImage');
+              if (h.imageUrl) {
+                modalImg.src = h.imageUrl;
+                modalImg.style.display = 'block';
+              } else {
+                modalImg.style.display = 'none';
+              }
+              modalArabic.textContent = h.imam || 'سيدة نساء العالمين';
+              if (h.hadithAr) {
+                modalArabicText.textContent = h.hadithAr;
+                modalArabicText.style.display = 'block';
+              } else {
+                modalArabicText.style.display = 'none';
+              }
+              modalText.textContent = '"' + h.hadith + '"';
+              modalNarrator.textContent = '— ' + (h.narrator || h.imamEn || '');
+              modalRef.textContent = '— ' + h.reference;
+              modal.classList.add('active');
+              document.body.style.overflow = 'hidden';
+            }
+          });
+        });
+      }
+
+      function closeModal() {
+        modal.classList.remove('active');
+        document.body.style.overflow = '';
+      }
+
+      closeBtn.addEventListener('click', closeModal);
+      modalBg.addEventListener('click', closeModal);
+      document.addEventListener('keydown', function(e) { if (e.key === 'Escape') closeModal(); });
+
+      renderCards();
+
+      db.ref('fatimiyyah').once('value').then(function(snap) {
+        var data = snap.val();
+        if (data && typeof data === 'object') {
+          var map = {};
+          (typeof FATIMIYYAH_HADITHS !== 'undefined' ? FATIMIYYAH_HADITHS : []).forEach(function(h) {
+            map[h.id] = Object.assign({}, h);
+          });
+          Object.keys(data).forEach(function(k) {
+            var fbH = data[k];
+            fbH._key = k;
+            if (fbH.id && map[fbH.id]) {
+              map[fbH.id] = Object.assign({}, map[fbH.id], fbH);
+            } else if (fbH.id) {
+              map[fbH.id] = fbH;
+            }
+          });
+          FATIMIYYAH_LIVE = Object.values(map).sort(function(a, b) { return (a.id || 0) - (b.id || 0); });
+          renderCards();
+        }
+      }).catch(function() {});
+    })();
+  </script>
+</body>
+</html>

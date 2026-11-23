@@ -53,8 +53,8 @@ img { max-width: 100%; display: block; }
 .nav-logo:hover .nav-logo-img { transform: scale(1.05); }
 .nav-logo-text { font-size: 14px; font-weight: 600; color: var(--gold); letter-spacing: 0.06em; }
 .nav-logo-text-short { display: none; font-size: 14px; font-weight: 600; color: var(--gold); letter-spacing: 0.04em; }
-.nav-links { display: flex; gap: 28px; align-items: center; }
-.nav-link { font-size: 14px; color: var(--text-dim); letter-spacing: 0.01em; position: relative; transition: color var(--transition); padding: 4px 0; }
+.nav-links { display: flex; gap: 20px; align-items: center; }
+.nav-link { font-size: 13.5px; color: var(--text-dim); letter-spacing: 0.01em; position: relative; transition: color var(--transition); padding: 4px 0; white-space: nowrap; }
 .nav-link::after { content: ''; position: absolute; bottom: -2px; left: 0; width: 0; height: 1.5px; background: var(--gold); border-radius: 1px; transition: width var(--transition); }
 .nav-link.active { color: var(--gold); }
 .nav-link:hover { color: var(--gold); }
@@ -179,6 +179,7 @@ section { position: relative; }
 .qr-placeholder { display: flex; flex-direction: column; align-items: center; }
 .qr-img { max-width: 220px; width: 100%; border-radius: var(--radius-md); background: #fff; padding: 12px; }
 .qr-bank-name { font-size: 13px; color: var(--gold); margin-top: 14px; font-weight: 600; letter-spacing: 0.04em; }
+.qr-collection-badge { display: inline-block; background: rgba(200, 169, 106, 0.12); border: 1px solid var(--gold); color: var(--gold); font-size: 13px; font-weight: 600; padding: 6px 16px; border-radius: 20px; margin: 12px auto 4px; text-align: center; letter-spacing: 0.02em; }
 .qr-payment-methods { margin-top: 18px; display: flex; flex-direction: column; align-items: center; gap: 10px; }
 .qr-method-label { font-size: 12px; color: var(--text-faint); }
 .qr-method-icons { display: flex; gap: 10px; }

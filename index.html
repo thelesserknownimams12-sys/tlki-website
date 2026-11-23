@@ -26,6 +26,7 @@
       <a href="hadiths.html" class="nav-link">Hadiths</a>
       <a href="support.html" class="nav-link">Support</a>
       <a href="majalis.html" class="nav-link">Majalis</a>
+      <a href="fatimiyyah.html" class="nav-link">Ayyam-e-Fatimiyyah (sa)</a>
       <a href="contribute.html" class="nav-link">Contribute</a>
       <a href="contact.html" class="nav-link">Contact</a>
     </div>
@@ -42,6 +43,7 @@
     <a href="hadiths.html" class="mobile-menu-link">Hadiths</a>
     <a href="support.html" class="mobile-menu-link">Support</a>
     <a href="majalis.html" class="mobile-menu-link">Majalis</a>
+    <a href="fatimiyyah.html" class="mobile-menu-link">Ayyam-e-Fatimiyyah (sa)</a>
     <a href="contribute.html" class="mobile-menu-link">Contribute</a>
     <a href="contact.html" class="mobile-menu-link">Contact</a>
     <a href="https://chat.whatsapp.com/GLehgiD3m7d7w3pOgBCcWZ" target="_blank" rel="noopener" class="mobile-menu-cta">Join Community ↗</a>
@@ -151,9 +153,9 @@
               <div class="campaign-name">Khamsa — Support Our Mission</div>
               <span class="campaign-badge">Upcoming</span>
             </div>
-            <p class="campaign-desc">Your contributions fund majalis, hadith translation, and community outreach — keeping the legacies of the Ahlul Bayt (as) alive.</p>
+            <p class="campaign-desc">Next Khamsa: 10th to 14th of December. Your contributions fund majalis, hadith translation, and community outreach — keeping the legacies of the Ahlul Bayt (as) alive.</p>
             <div class="progress-track"><div class="progress-fill" style="width:0%"></div></div>
-            <div class="progress-meta"><span>0% funded</span><span>₹0 / ₹62,000</span></div>
+            <div class="progress-meta"><span>0% funded</span><span>₹0 collected out of ₹1.45 lakh</span></div>
             <div class="campaign-donate">
               <a href="contribute.html" class="btn-crimson">Contribute</a>
             </div>
@@ -165,6 +167,7 @@
             <div class="qr-placeholder">
               <img src="assets/barcode.png" alt="Scan to Contribute" class="qr-img">
             </div>
+            <div class="qr-collection-badge">₹0 collected out of ₹1.45 lakh</div>
             <p class="qr-bank-name">RISE TOGETHER WELFARE TRUST</p>
             <div class="qr-payment-methods">
               <span class="qr-method-label">Or pay via:</span>
@@ -213,6 +216,7 @@
           <a href="about.html" class="footer-link">About</a>
           <a href="hadiths.html" class="footer-link">Hadiths</a>
           <a href="majalis.html" class="footer-link">Majalis</a>
+          <a href="fatimiyyah.html" class="footer-link">Ayyam-e-Fatimiyyah (sa)</a>
           <a href="contribute.html" class="footer-link">Contribute</a>
           <a href="contact.html" class="footer-link">Contact</a>
         </div>
@@ -314,6 +318,7 @@
               var pct = c.goal ? Math.round((c.funded || 0) / c.goal * 100) : 0;
               var badgeClass = c.status === 'completed' ? ' done' : '';
               var badgeText = c.status === 'completed' ? 'Completed' : c.status === 'upcoming' ? 'Upcoming' : 'Active';
+              var goalStr = c.goal === 145000 ? '₹1.45 lakh' : '₹' + (c.goal || 0).toLocaleString();
               html += '<div class="campaign-card fade-in">'
                 + '<div class="campaign-top">'
                 + '<div class="campaign-name">' + (c.title || 'Campaign') + '</div>'
@@ -321,7 +326,7 @@
                 + '</div>';
               if (c.description) html += '<p class="campaign-desc">' + c.description + '</p>';
               html += '<div class="progress-track"><div class="progress-fill" style="width:' + pct + '%"></div></div>'
-                + '<div class="progress-meta"><span>' + pct + '% funded</span><span>₹' + (c.funded || 0).toLocaleString() + ' / ₹' + (c.goal || 0).toLocaleString() + '</span></div>';
+                + '<div class="progress-meta"><span>' + pct + '% funded</span><span>₹' + (c.funded || 0).toLocaleString() + ' collected out of ' + goalStr + '</span></div>';
               if (c.status !== 'completed') {
                 html += '<div class="campaign-donate"><a href="contribute.html" class="btn-crimson">Contribute</a></div>';
               } else {
