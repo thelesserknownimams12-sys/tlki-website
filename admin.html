@@ -203,7 +203,7 @@
   <!-- HADITH MODAL -->
   <div class="ov" id="hMdl"><div class="mb">
     <h3 id="hMdlT">Add Hadith</h3>
-    <div class="fg"><label>Imam</label><select id="fImam"><option value="hasan">Imam Hasan (as)</option><option value="baqir">Imam Baqir (as)</option><option value="sadiq">Imam Sadiq (as)</option><option value="kazim">Imam Kazim (as)</option><option value="rida">Imam Rida (as)</option><option value="jawad">Imam Jawad (as)</option><option value="hadi">Imam Hadi (as)</option><option value="askari">Imam Askari (as)</option><option value="mahdi">Imam Mahdi (atfs)</option></select></div>
+    <div class="fg"><label>Imam</label><select id="fImam"><option value="ali">Imam Ali (as)</option><option value="hasan">Imam Hasan (as)</option><option value="sajjad">Imam Sajjad (as)</option><option value="baqir">Imam Baqir (as)</option><option value="sadiq">Imam Sadiq (as)</option><option value="kazim">Imam Kazim (as)</option><option value="rida">Imam Rida (as)</option><option value="jawad">Imam Jawad (as)</option><option value="hadi">Imam Hadi (as)</option><option value="askari">Imam Askari (as)</option><option value="mahdi">Imam Mahdi (atfs)</option><option value="prophet">Rasool-e-Khuda (s.a.w.a.)</option></select></div>
     <div class="fg"><label>Hadith (English)</label><textarea id="fHadith" placeholder="English hadith text..."></textarea></div>
     <div class="fg"><label>Hadith (Arabic)</label><textarea id="fHadithAr" placeholder="الحديث بالعربية..." dir="rtl" style="font-family:'Amiri',serif;font-size:16px"></textarea><div class="hint">RTL Arabic text</div></div>
     <div class="fg"><label>Narrator / Attribution</label><input id="fNarrator" placeholder="e.g. Imam Sadiq (as), Rasool-e-Khuda (S.A.W.A.)"><div class="hint">Who said or narrated this</div></div>
@@ -241,6 +241,7 @@
 
   <div class="toast" id="toast"></div>
 
+  <script src="hadiths-data.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-database-compat.js"></script>
@@ -248,12 +249,12 @@
     var FC={apiKey:"AIzaSyBCZskOsHR9ij30pNrmzuxbs4P6cQMl5dg",authDomain:"tlki-hadiths.firebaseapp.com",databaseURL:"https://tlki-hadiths-default-rtdb.firebaseio.com",projectId:"tlki-hadiths",storageBucket:"tlki-hadiths.firebasestorage.app",messagingSenderId:"792477774090",appId:"1:792477774090:web:7cc8718e5ae8f060d70af3"};
     firebase.initializeApp(FC);var db=firebase.database(),auth=firebase.auth();
 
-    var IM={hasan:{ar:'الإمام الحسن عليه السلام',en:'Imam Hasan (as)'},baqir:{ar:'الإمام الباقر عليه السلام',en:'Imam Baqir (as)'},sadiq:{ar:'الإمام الصادق عليه السلام',en:'Imam Sadiq (as)'},kazim:{ar:'الإمام الكاظم عليه السلام',en:'Imam Kazim (as)'},rida:{ar:'الإمام الرضا عليه السلام',en:'Imam Rida (as)'},jawad:{ar:'الإمام الجواد عليه السلام',en:'Imam Jawad (as)'},hadi:{ar:'الإمام الهادي عليه السلام',en:'Imam Hadi (as)'},askari:{ar:'الإمام العسكري عليه السلام',en:'Imam Askari (as)'},mahdi:{ar:'الإمام المهدي عجل الله تعالى فرجه',en:'Imam Mahdi (atfs)'}};
+    var IM={ali:{ar:'أمير المؤمنين عليه السلام',en:'Imam Ali (as)'},hasan:{ar:'الإمام الحسن عليه السلام',en:'Imam Hasan (as)'},sajjad:{ar:'الإمام السجاد عليه السلام',en:'Imam Sajjad (as)'},baqir:{ar:'الإمام الباقر عليه السلام',en:'Imam Baqir (as)'},sadiq:{ar:'الإمام الصادق عليه السلام',en:'Imam Sadiq (as)'},kazim:{ar:'الإمام الكاظم عليه السلام',en:'Imam Kazim (as)'},rida:{ar:'الإمام الرضا عليه السلام',en:'Imam Rida (as)'},jawad:{ar:'الإمام الجواد عليه السلام',en:'Imam Jawad (as)'},hadi:{ar:'الإمام الهادي عليه السلام',en:'Imam Hadi (as)'},askari:{ar:'الإمام العسكري عليه السلام',en:'Imam Askari (as)'},mahdi:{ar:'الإمام المهدي عجل الله تعالى فرجه',en:'Imam Mahdi (atfs)'},prophet:{ar:'رسول الله صلى الله عليه وآله',en:'Rasool-e-Khuda (s.a.w.a.)'}};
 
     var hData=[],mData=[];
     var editH=null,editM=null;
     var hPage=1,PAGE_SIZE=10;
-    var mSynced=false;
+    var hSynced=false,mSynced=false;
 
     var SEED_MAJALIS=[
       {imamName:'Imam Hadi',title:'Shahadat of Imam Ali al-Naqi (as)',startDate:'22 Dec 2025',endDate:'26 Dec 2025',hijri:'1st–5th Rajab',description:'Commemorating the martyrdom of Imam Ali al-Naqi al-Hadi (as).',detail:'Also: Wiladat of Imam Mohammad al-Baqir (as)',posterUrl:'',bannerUrl:'',youtubeUrl:'https://www.youtube.com/watch?v=8UymIdHg3fc',speakerName:'',location:'',status:'upcoming'},
@@ -291,22 +292,73 @@
     function loadAll(){loadH();loadM()}
 
     // ===== HADITHS =====
-    function loadH(){db.ref('hadiths').once('value').then(function(s){var d=s.val();hData=d?Object.keys(d).map(function(k){var h=d[k];h._key=k;return h}).sort(function(a,b){return(a.id||0)-(b.id||0)}):[];populateHFilter();renderH()}).catch(function(er){document.getElementById('htb').innerHTML='<tr><td colspan="7" class="empty-state">Error loading hadiths: '+er.message+'</td></tr>'})}
+    function loadH(){
+      db.ref('hadiths').once('value').then(function(s){
+        var d = s.val();
+        var fbList = d && typeof d === 'object' ? Object.keys(d).map(function(k){ var h = d[k]; h._key = k; return h; }) : [];
+        var localList = typeof HADITHS !== 'undefined' ? HADITHS : [];
+        var map = {};
+        localList.forEach(function(h, i){
+          var item = Object.assign({}, h);
+          item._key = 'seed_h_' + i;
+          map[item.id] = item;
+        });
+        fbList.forEach(function(h){
+          if (h.id && map[h.id]) {
+            map[h.id] = Object.assign({}, map[h.id], h);
+          } else if (h.id) {
+            map[h.id] = h;
+          }
+        });
+        hData = Object.values(map).sort(function(a, b){ return (a.id || 0) - (b.id || 0); });
+        var unsynced = hData.filter(function(h){ return h._key && h._key.indexOf('seed_h_') === 0; });
+        hSynced = (unsynced.length === 0);
+        populateHFilter();
+        renderH();
+      }).catch(function(er){
+        var localList = typeof HADITHS !== 'undefined' ? HADITHS : [];
+        hData = localList.map(function(h, i){ var o = Object.assign({}, h); o._key = 'seed_h_' + i; return o; });
+        hSynced = false;
+        populateHFilter();
+        renderH();
+      });
+    }
     function populateHFilter(){var slugs=[];hData.forEach(function(h){if(slugs.indexOf(h.slug)===-1)slugs.push(h.slug)});var sel=document.getElementById('hadithFilter');sel.innerHTML='<option value="all">All Imams</option>';slugs.forEach(function(s){var n=IM[s]?IM[s].en:s;sel.innerHTML+='<option value="'+s+'">'+n+'</option>'})}
     function getFilteredH(){var q=document.getElementById('hadithSearch').value.toLowerCase(),f=document.getElementById('hadithFilter').value;return hData.filter(function(h){var mQ=!q||h.hadith.toLowerCase().indexOf(q)>-1||(h.imamEn||'').toLowerCase().indexOf(q)>-1||(h.narrator||'').toLowerCase().indexOf(q)>-1||(h.reference||'').toLowerCase().indexOf(q)>-1;var mF=f==='all'||h.slug===f;return mQ&&mF})}
     function renderH(){var filtered=getFilteredH();var imams={},ar=0,nr=0;hData.forEach(function(h){imams[h.slug]=true;if(h.hadithAr)ar++;if(h.narrator)nr++});document.getElementById('sTotal').textContent=hData.length;document.getElementById('sImams').textContent=Object.keys(imams).length;document.getElementById('sArabic').textContent=ar;document.getElementById('sNarrator').textContent=nr;
+      var syncHHtml=hSynced?'<span class="sync-badge synced">✓ Synced</span>':'<span class="sync-badge local">Unsynced data</span> <button class="sync-btn" onclick="syncHadiths()">↑ Sync to Firebase</button>';
+      document.getElementById('hadithSync')&&document.getElementById('hadithSync').remove();
+      var shH=document.querySelector('#pane-hadiths .sh');
+      if(shH){var spH=document.createElement('span');spH.id='hadithSync';spH.innerHTML=syncHHtml;shH.querySelector('.sh-right').appendChild(spH)}
       var totalPages=Math.ceil(filtered.length/PAGE_SIZE)||1;if(hPage>totalPages)hPage=totalPages;
       var start=(hPage-1)*PAGE_SIZE,items=filtered.slice(start,start+PAGE_SIZE);
       var html='';items.forEach(function(h,i){var short=h.hadith.length>60?h.hadith.substring(0,60)+'...':h.hadith;html+='<tr><td>'+(start+i+1)+'</td><td><span class="tag tag-gold">'+(h.imamEn||'')+'</span></td><td>'+short+'</td><td>'+(h.hadithAr?'<span class="tag tag-green">✓</span>':'<span class="tag tag-grey">—</span>')+'</td><td>'+(h.imageUrl?'<span class="tag tag-blue">✓</span>':'<span class="tag tag-grey">—</span>')+'</td><td style="font-size:12px;color:#777">'+(h.narrator||'—')+'</td><td style="font-size:11px;color:#555">'+(h.reference||'—')+'</td><td><button class="btn-s btn-v" onclick="viewH(\''+h._key+'\')">View</button><button class="btn-s btn-e" onclick="editH(\''+h._key+'\')">Edit</button><button class="btn-s btn-d" onclick="delH(\''+h._key+'\')">Del</button></td></tr>'});
       document.getElementById('htb').innerHTML=html||'<tr><td colspan="8" class="empty-state">No hadiths found.</td></tr>';
       var pgn='';for(var p=1;p<=totalPages;p++){pgn+='<button class="pgn-btn'+(p===hPage?' on':'')+'" onclick="hPage='+p+';renderH()">'+p+'</button>'}document.getElementById('hPgn').innerHTML=totalPages>1?pgn:''}
 
+    function syncHadiths(){
+      var items=hData.filter(function(h){return h._key&&h._key.indexOf('seed_h_')===0});
+      if(!items.length){toast('All hadiths already synced',0);return}
+      var count=0,total=items.length;
+      toast('Syncing '+total+' hadiths to Firebase...');
+      items.forEach(function(h){
+        var d={id:h.id,imam:h.imam,imamEn:h.imamEn,slug:h.slug,hadith:h.hadith,reference:h.reference||''};
+        if(h.hadithAr)d.hadithAr=h.hadithAr;
+        if(h.narrator)d.narrator=h.narrator;
+        if(h.imageUrl)d.imageUrl=h.imageUrl;
+        db.ref('hadiths').push(d).then(function(){
+          count++;
+          if(count===total){toast(total+' hadiths synced to Firebase!');loadH()}
+        }).catch(function(e){toast('Sync error: '+e.message,1)});
+      });
+    }
+
     function openAddH(){editH=null;document.getElementById('hMdlT').textContent='Add Hadith';document.getElementById('fImam').value='hasan';document.getElementById('fHadith').value='';document.getElementById('fHadithAr').value='';document.getElementById('fNarrator').value='';document.getElementById('fRef').value='';document.getElementById('fImgUrl').value='';document.getElementById('fImgUrlPrev').style.display='none';document.getElementById('hMdl').classList.add('on')}
     function editHa(k){var h=hData.find(function(x){return x._key===k});if(!h)return;editH=k;document.getElementById('hMdlT').textContent='Edit Hadith';document.getElementById('fImam').value=h.slug||'hasan';document.getElementById('fHadith').value=h.hadith||'';document.getElementById('fHadithAr').value=h.hadithAr||'';document.getElementById('fNarrator').value=h.narrator||'';document.getElementById('fRef').value=h.reference||'';document.getElementById('fImgUrl').value=h.imageUrl||'';var ip=document.getElementById('fImgUrlPrev');if(h.imageUrl){ip.src=h.imageUrl;ip.style.display='block'}else{ip.style.display='none'}document.getElementById('hMdl').classList.add('on')}
     function viewH(k){var h=hData.find(function(x){return x._key===k});if(!h)return;document.getElementById('dMdlT').textContent='Hadith Details';var b='';if(h.imageUrl)b+='<div class="detail-row"><div class="detail-label">Image</div><div class="detail-val"><img src="'+h.imageUrl+'" style="max-width:200px;border-radius:6px;border:1px solid #222" onerror="this.style.display=\'none\'"></div></div>';b+='<div class="detail-row"><div class="detail-label">Imam</div><div class="detail-val">'+(h.imamEn||'')+'</div></div><div class="detail-row"><div class="detail-label">Arabic Imam</div><div class="detail-val" dir="rtl" style="font-family:Amiri,serif;font-size:16px">'+(h.imam||'')+'</div></div><div class="detail-row"><div class="detail-label">Hadith</div><div class="detail-val">"' +(h.hadith||'')+'"</div></div>';if(h.hadithAr)b+='<div class="detail-row"><div class="detail-label">Arabic</div><div class="detail-val" dir="rtl" style="font-family:Amiri,serif;font-size:16px;color:#C8A96A">'+h.hadithAr+'</div></div>';b+='<div class="detail-row"><div class="detail-label">Narrator</div><div class="detail-val">'+(h.narrator||'—')+'</div></div><div class="detail-row"><div class="detail-label">Reference</div><div class="detail-val">'+(h.reference||'—')+'</div></div>';document.getElementById('dMdlBody').innerHTML=b;document.getElementById('dMdlYoutube').innerHTML='';document.getElementById('dMdl').classList.add('on')}
     function saveH(){var sl=document.getElementById('fImam').value,ht=document.getElementById('fHadith').value.trim(),ar=document.getElementById('fHadithAr').value.trim(),nr=document.getElementById('fNarrator').value.trim(),rf=document.getElementById('fRef').value.trim(),iu=document.getElementById('fImgUrl').value.trim();if(!ht){toast('Hadith text required',1);return}var b=document.getElementById('hSaveBtn');b.textContent='Saving...';b.disabled=true;var info=IM[sl]||{ar:sl,en:sl},d={imam:info.ar,imamEn:info.en,slug:sl,hadith:ht,reference:rf};if(ar)d.hadithAr=ar;if(nr)d.narrator=nr;if(iu)d.imageUrl=iu;if(editH!==null){db.ref('hadiths/'+editH).update(d).then(function(){toast('Updated!');closeMdl('hMdl');loadH();b.textContent='Save';b.disabled=false}).catch(function(e){toast(e.message,1);b.textContent='Save';b.disabled=false})}else{d.id=(hData.reduce(function(m,x){return Math.max(m,x.id||0)},0))+1;db.ref('hadiths').push(d).then(function(){toast('Added!');closeMdl('hMdl');loadH();b.textContent='Save';b.disabled=false}).catch(function(e){toast(e.message,1);b.textContent='Save';b.disabled=false})}}
     function delH(k){if(!confirm('Delete this hadith?'))return;db.ref('hadiths/'+k).remove().then(function(){toast('Deleted');loadH()}).catch(function(e){toast(e.message,1)})}
-    window.editH=editHa;window.viewH=viewH;window.delH=delH;window.openAddH=openAddH;window.saveH=saveH;
+    window.editH=editHa;window.viewH=viewH;window.delH=delH;window.openAddH=openAddH;window.saveH=saveH;window.syncHadiths=syncHadiths;
 
     // ===== MAJALIS =====
     function loadM(){

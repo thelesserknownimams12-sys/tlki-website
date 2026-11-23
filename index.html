@@ -284,7 +284,20 @@
       db.ref('hadiths').once('value').then(function(snap) {
         var data = snap.val();
         if (data && typeof data === 'object') {
-          hadiths = Object.keys(data).map(function(k) { var h = data[k]; h._key = k; return h; }).sort(function(a, b) { return (a.id || 0) - (b.id || 0); });
+          var map = {};
+          (typeof HADITHS !== 'undefined' ? HADITHS : []).forEach(function(h) {
+            map[h.id] = Object.assign({}, h);
+          });
+          Object.keys(data).forEach(function(k) {
+            var fbH = data[k];
+            fbH._key = k;
+            if (fbH.id && map[fbH.id]) {
+              map[fbH.id] = Object.assign({}, map[fbH.id], fbH);
+            } else if (fbH.id) {
+              map[fbH.id] = fbH;
+            }
+          });
+          hadiths = Object.values(map).sort(function(a, b) { return (a.id || 0) - (b.id || 0); });
           renderHub();
         }
       }).catch(function() {});
