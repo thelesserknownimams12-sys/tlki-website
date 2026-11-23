@@ -402,9 +402,6 @@ section { position: relative; }
 .majalis-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: var(--radius-lg); overflow: hidden; transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition); text-decoration: none; display: flex; flex-direction: column; }
 .majalis-card:hover { border-color: var(--border-mid); transform: translateY(-3px); box-shadow: var(--shadow-gold); }
 .majalis-card-poster { width: 100%; aspect-ratio: 3/4; object-fit: cover; background: var(--bg-card); max-height: 260px; }
-.majalis-card-poster-placeholder { width: 100%; aspect-ratio: 3/4; background: linear-gradient(135deg, #1a1610, #111); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; max-height: 260px; }
-.majalis-card-poster-icon { width: 48px; height: 48px; border-radius: 50%; border: 2px solid var(--gold); display: flex; align-items: center; justify-content: center; font-size: 18px; color: var(--gold); font-family: var(--font-arabic); }
-.majalis-card-poster-label { font-size: 11px; color: var(--text-faint); }
 .majalis-card-body { padding: 20px; flex: 1; display: flex; flex-direction: column; }
 .majalis-card-imam { font-size: 12px; color: var(--gold); font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase; margin-bottom: 4px; }
 .majalis-card-title { font-size: 16px; color: var(--text-bright); font-weight: 600; line-height: 1.3; margin-bottom: 8px; font-family: var(--font-serif); }
